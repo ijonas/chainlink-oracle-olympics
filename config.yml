@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chainlink-configmap
+data:
+  root-folder: "/chainlink"
+  log-level: "debug"
+  eth-chain-id: "4"
+  chainlink-tls-port: "0"
+  secure-cookies: "false"
+  allow-origins: "*"
+  eth-url: "ws://ethereum:8546"
+  json-console: "true"

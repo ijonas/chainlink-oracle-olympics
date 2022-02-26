@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chainlink
+  labels:
+    app: chainlink
+spec:
+  clusterIP: None
+  selector:
+    app: chainlink
+  ports:
+    - name: listening
+      port: 6688
+      targetPort: 6688
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chainlink
+spec:
+  selector:
+    matchLabels:
+      app: chainlink
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chainlink
+        role: chainlink
+        environment: production
+    spec:
+      containers:
+        - name: chainlink
+          image: smartcontract/chainlink:1.1.1
+          args: ["local", "n", "-p",  "/chainlink/.password", "-a", "/chainlink/.api"]
+          env:
+            - name: ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: root-folder
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: log-level
+            - name: ETH_CHAIN_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: eth-chain-id
+            - name: CHAINLINK_TLS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: chainlink-tls-port
+            - name: SECURE_COOKIES
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: secure-cookies
+            - name: ALLOW_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: allow-origins
+            - name: ETH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: eth-url
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: chainlink-secrets
+                  key: database-url
+            - name: JSON_CONSOLE
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: json-console
+          ports:
+            - containerPort: 6688
+          volumeMounts:
+            - name: api-volume
+              mountPath: /chainlink/.api
+              subPath: .api
+            - name: password-volume
+              mountPath: /chainlink/.password
+              subPath: .password
+          resources:
+            requests:
+              cpu: 3000m
+              memory: 6000Mi
+      volumes:
+        - name: api-volume
+          secret:
+            secretName: api-env
+        - name: password-volume
+          secret:
+            secretName: password-env

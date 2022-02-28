@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: datafeed3
+  labels:
+    app: datafeed3
+spec:
+  clusterIP: None
+  selector:
+    app: datafeed3
+  ports:
+    - name: listening
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datafeed3
+spec:
+  selector:
+    matchLabels:
+      app: datafeed3
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: datafeed3
+        role: chainlink
+        environment: production
+    spec:
+      containers:
+        - name: datafeed3
+          image: public.ecr.aws/chainlink/adapters/nop-olympics-adapter:latest
+          env:
+            - name: API_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: datafeed3-url
+            - name: CACHE_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: datafeed3-cache-enabled
+            - name: CACHE_MAX_AGE
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: datafeed3-cache-max-age                  
+          ports:
+          - containerPort: 8080
+          resources:
+            requests:
+              cpu: 200m
+              memory: 500Mi

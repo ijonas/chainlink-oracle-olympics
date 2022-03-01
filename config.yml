@@ -22,7 +22,7 @@ data:
   ocr-key-bundle-id: "945fbc3a51ffdf5902f510f2adc8588e51b1880592ef6e273d77acfd2e0669fe"
   p2p-peer-id: "p2p_12D3KooWLH9EcAPR2DjhAB6ZXQkzAKZ9BJHDAkGnrg5JancLQuYy"
   p2p-bootstrap-peers: "/dns4/rinkeby-bootstrap.linkriver.io/tcp/7777/p2p/12D3KooWRiWTNQTnHMgaezYXjEeYFiRJxJjj2KneBsW6o8qXkwvB"
-  ocr-transmitter-address: "0xACaF1bc8e88dE055497EBdAfCDF44f342AB4CbfC"
+  ocr-transmitter-address: "0xe35fbb862780E778fc3AB7177e863eCBc7DAE40E"
   datafeed1-url: "https://k6yjih2ut8.execute-api.us-west-2.amazonaws.com/default/NOP_Olympics_DP1"
   datafeed1-cache-enabled: "true"
   datafeed1-cache-max-age: "60000"

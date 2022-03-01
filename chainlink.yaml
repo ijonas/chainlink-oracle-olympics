@@ -7,7 +7,6 @@ spec:
     matchLabels:
       app: chainlink
   replicas: 1
-  maxReplicas: 1
   template:
     metadata:
       labels:
@@ -121,9 +120,26 @@ spec:
                   name: chainlink-configmap
                   key: ocr-transmitter-address                  
 
-
-
-
+            - name: EXPLORER_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: chainlink-secrets
+                  key: explorer-access-key
+            - name: EXPLORER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: chainlink-secrets
+                  key: explorer-secret
+            - name: EXPLORER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: explorer-url
+            - name: P2P_BOOTSTRAP_PEERS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: p2p-bootstrap-peers
 
           ports:
             - containerPort: 6688

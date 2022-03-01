@@ -59,6 +59,11 @@ spec:
                 configMapKeyRef:
                   name: chainlink-configmap
                   key: eth-url
+            - name: ETH_SECONDARY_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: eth-secondary-urls
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:

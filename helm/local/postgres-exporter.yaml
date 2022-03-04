@@ -1,0 +1,17 @@
+serviceMonitor:
+  enabled: true
+  additionalLabels: 
+    release: prometheus
+  labels:
+    release: prometheus
+    
+config:
+  datasource:
+    host: postgres
+    user: chainlink
+    passwordSecret: 
+      name: 'postgres-secrets' 
+      key: 'postgres-password'
+    port: "5432"
+    database: 'chainlink'
+    sslmode: disable

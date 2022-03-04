@@ -18,7 +18,7 @@ data:
   database-locking-mode: "lease"
   p2p-listen-port: "11972"
   p2p-announce-ip: "35.202.58.177"
-  p2p-announce-port: "11973"
+  p2p-announce-port: "11972"
   ocr-key-bundle-id: "945fbc3a51ffdf5902f510f2adc8588e51b1880592ef6e273d77acfd2e0669fe"
   p2p-peer-id: "p2p_12D3KooWLH9EcAPR2DjhAB6ZXQkzAKZ9BJHDAkGnrg5JancLQuYy"
   p2p-bootstrap-peers: "/dns4/rinkeby-bootstrap.linkriver.io/tcp/7777/p2p/12D3KooWRiWTNQTnHMgaezYXjEeYFiRJxJjj2KneBsW6o8qXkwvB"

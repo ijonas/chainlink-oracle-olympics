@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: datafeed3
+  name: datafeed2
   labels:
-    app: datafeed3
+    app: datafeed2
 spec:
   clusterIP: None
   selector:
-    app: datafeed3
+    app: datafeed2
   ports:
     - name: listening
       port: 8080
@@ -17,38 +17,49 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: datafeed3
+  name: datafeed2
 spec:
   selector:
     matchLabels:
-      app: datafeed3
-  replicas: 1
+      app: datafeed2
+  replicas: 2
   template:
     metadata:
       labels:
-        app: datafeed3
+        app: datafeed2
         role: chainlink
         environment: production
     spec:
       containers:
-        - name: datafeed3
+        - name: datafeed2
           image: public.ecr.aws/chainlink/adapters/nop-olympics-adapter:latest
           env:
             - name: API_ENDPOINT
               valueFrom:
                 configMapKeyRef:
                   name: chainlink-configmap
-                  key: datafeed3-url
+                  key: datafeed2-url
             - name: CACHE_ENABLED
               valueFrom:
                 configMapKeyRef:
                   name: chainlink-configmap
-                  key: datafeed3-cache-enabled
+                  key: datafeed2-cache-enabled
             - name: CACHE_MAX_AGE
               valueFrom:
                 configMapKeyRef:
                   name: chainlink-configmap
-                  key: datafeed3-cache-max-age                  
+                  key: datafeed2-cache-max-age      
+            - name: EXPERIMENTAL_METRICS_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: datafeed2-metrics-enabled
+            - name: METRICS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: datafeed2-metrics-name
+
           ports:
           - containerPort: 8080
           resources:

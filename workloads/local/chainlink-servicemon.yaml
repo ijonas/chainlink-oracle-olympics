@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/name: chainlink
+    release: prometheus
+  name: chainlink
+  namespace: default
+spec:
+  endpoints:
+  - honorLabels: true
+    path: /metrics
+    targetPort: 6688
+    scrapeTimeout: 30s
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      app: chainlink

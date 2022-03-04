@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kubernetes.docker.internal
+      http:
+        paths:
+          - backend:
+              service:
+                name: chainlink
+                port:
+                  number: 6688
+            path: /
+            pathType: Prefix

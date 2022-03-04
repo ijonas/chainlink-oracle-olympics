@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/name: ethereum
+    release: prometheus
+  name: ethereum
+  namespace: default
+spec:
+  endpoints:
+  - honorLabels: true
+    path: /debug/metrics/prometheus
+    targetPort: 6060
+    scrapeTimeout: 30s
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      app: ethereum

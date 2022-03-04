@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ethereum
+  labels:
+    app: ethereum
+spec:
+  clusterIP: None
+  selector:
+    app: ethereum
+  ports:
+    - name: listening
+      port: 30303
+      targetPort: 30303
+      protocol: TCP
+    - name: metrics
+      port: 6060
+      targetPort: 6060
+      protocol: TCP
+    - name: discovery
+      port: 30303
+      targetPort: 30303
+      protocol: UDP
+    - name: httprpc
+      port: 8545
+      targetPort: 8545
+      protocol: TCP
+    - name: websocket
+      port: 8546
+      targetPort: 8546
+      protocol: TCP
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ethereum
+spec:
+  selector:
+    matchLabels:
+      app: ethereum
+  serviceName: ethereum
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ethereum
+        role: ethereum
+        environment: local
+    spec:
+      containers:
+        - name: ethereum
+          image: ethereum/client-go:v1.10.16
+          command: ["geth"]
+          args: ["--rinkeby", "--rpc.gascap=0", "--rpc.txfeecap=0",
+                  "--ws",  "--ws.origins=*", "--ws.addr=0.0.0.0", 
+                  "--http", "--http.addr=0.0.0.0", "--http.api=eth,net,web3,txpool", "--http.corsdomain=*.*.*.*", 
+                  "--metrics", "--pprof", "--pprof.addr=0.0.0.0"
+                  ]
+          ports:
+            - containerPort: 30303
+              protocol: TCP
+            - containerPort: 6060
+              protocol: TCP
+            - containerPort: 30303
+              protocol: UDP
+            - containerPort: 8545
+            - containerPort: 8546
+          volumeMounts:
+            - name: ethereum-data
+              mountPath: /root
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 8000Mi
+
+      volumes:
+      - name: ethereum-data
+        hostPath:
+          path: /run/desktop/mnt/host/f/kubernetes/data/ethereum-data
+          type: DirectoryOrCreate

@@ -1,0 +1,75 @@
+
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+##
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+
+    ## Storage is the definition of how storage will be used by the Alertmanager instances.
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+    ##
+    storage: 
+      volumeClaimTemplate:
+        spec:
+          storageClassName: fast
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+    resources: 
+      limits:
+        memory: 800Mi
+        cpu: 800m
+      requests:
+        memory: 400Mi
+        cpu: 400m
+
+
+## Manages Prometheus and Alertmanager components
+##
+prometheusOperator:
+  enabled: true
+
+  resources: 
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+  prometheusConfigReloader:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 50Mi
+      limits:
+        cpu: 100m
+        memory: 50Mi
+
+prometheus:
+  enabled: true
+  prometheusSpec:
+    resources: 
+      limits:
+        memory: 800Mi
+        cpu: 800m
+      requests:
+        memory: 400Mi
+        cpu: 400m
+
+    ## Prometheus StorageSpec for persistent data
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+    ##
+    storageSpec: 
+      volumeClaimTemplate:
+        spec:
+          storageClassName: fast
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+

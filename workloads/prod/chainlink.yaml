@@ -6,17 +6,17 @@ spec:
   selector:
     matchLabels:
       app: chainlink
-  replicas: 1
+      role: ethereum
+  replicas: 2
   template:
     metadata:
       labels:
         app: chainlink
-        role: chainlink
-        environment: production
+        role: ethereum
     spec:
       containers:
         - name: chainlink
-          image: smartcontract/chainlink:1.1.1
+          image: smartcontract/chainlink:1.2.0
           args: ["local", "n", "-p",  "/chainlink/.password", "-a", "/chainlink/.api"]
           env:
             - name: ROOT
@@ -157,6 +157,14 @@ spec:
             - name: password-volume
               mountPath: /chainlink/.password
               subPath: .password
+
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 6688
+            initialDelaySeconds: 3
+            periodSeconds: 1
+
           resources:
             requests:
               cpu: 3000m

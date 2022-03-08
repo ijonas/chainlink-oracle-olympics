@@ -16,6 +16,7 @@ data:
   feature-offchain-reporting: "true"
   ocr-trace-logging: "true"
   database-locking-mode: "lease"
+  database-lease-lock-refresh-interval: "1s"
   p2p-listen-port: "11972"
   p2p-announce-ip: "35.202.58.177"
   p2p-announce-port: "11972"

@@ -10,7 +10,7 @@ data:
   chainlink-tls-port: "0"
   secure-cookies: "false"
   allow-origins: "*"
-  eth-url: "ws://ethereum:8546"
+  eth-url: "ws://lethereum:8546"
   eth-secondary-urls: "https://rinkeby.infura.io/v3/3af2f36b81ca4813bde5befec0550f53"
   json-console: "true"
   feature-offchain-reporting: "true"

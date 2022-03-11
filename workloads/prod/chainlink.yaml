@@ -6,13 +6,11 @@ spec:
   selector:
     matchLabels:
       app: chainlink
-      role: ethereum
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
         app: chainlink
-        role: ethereum
     spec:
       containers:
         - name: chainlink

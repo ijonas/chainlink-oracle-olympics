@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: chainlink
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: chainlink
-          image: smartcontract/chainlink:1.2.0
+          image: dextrac/chainlink-olympics:latest
           args: ["local", "n", "-p",  "/chainlink/.password", "-a", "/chainlink/.api"]
           env:
             - name: ROOT

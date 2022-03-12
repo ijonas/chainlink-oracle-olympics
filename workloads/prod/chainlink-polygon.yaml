@@ -1,0 +1,170 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chainlink-polygon
+spec:
+  selector:
+    matchLabels:
+      app: chainlink-polygon
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chainlink-polygon
+    spec:
+      containers:
+        - name: chainlink-polygon
+          image: smartcontract/chainlink:1.2.0
+          args: ["local", "n", "-p",  "/chainlink/.password", "-a", "/chainlink/.api"]
+          env:
+            - name: ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: root-folder
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: log-level
+            - name: LOG_TO_DISK
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: log-to-disk
+            - name: ETH_CHAIN_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: bor-chain-id
+            - name: CHAINLINK_TLS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: chainlink-tls-port
+            - name: SECURE_COOKIES
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: secure-cookies
+            - name: ALLOW_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: allow-origins
+            - name: ETH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: bor-url
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: chainlink-secrets
+                  key: polygon-database-url
+            - name: JSON_CONSOLE
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: json-console
+            - name: DATABASE_LOCKING_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: database-locking-mode
+
+
+
+            # - name: FEATURE_OFFCHAIN_REPORTING
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: feature-offchain-reporting
+            # - name: OCR_TRACE_LOGGING
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: ocr-trace-logging
+            # - name: P2P_LISTEN_PORT
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: polygon-p2p-listen-port
+            # - name: P2P_ANNOUNCE_IP
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: polygon-p2p-announce-ip
+            # - name: P2P_ANNOUNCE_PORT
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: polygon-p2p-announce-port                  
+
+
+            # - name: OCR_KEY_BUNDLE_ID
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: ocr-key-bundle-id                  
+            # - name: P2P_PEER_ID
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: p2p-peer-id                  
+            # - name: OCR_TRANSMITTER_ADDRESS
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: ocr-transmitter-address                  
+
+            # - name: EXPLORER_ACCESS_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: chainlink-secrets
+            #       key: explorer-access-key
+            # - name: EXPLORER_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: chainlink-secrets
+            #       key: explorer-secret
+            # - name: EXPLORER_URL
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: explorer-url
+            # - name: P2P_BOOTSTRAP_PEERS
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: chainlink-configmap
+            #       key: p2p-bootstrap-peers
+
+          ports:
+            - containerPort: 6688
+            - containerPort: 11975
+          volumeMounts:
+            - name: api-volume
+              mountPath: /chainlink/.api
+              subPath: .api
+            - name: password-volume
+              mountPath: /chainlink/.password
+              subPath: .password
+
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 6688
+            initialDelaySeconds: 3
+            periodSeconds: 1
+
+          resources:
+            requests:
+              cpu: 3000m
+              memory: 6000Mi
+      volumes:
+        - name: api-volume
+          secret:
+            secretName: api-env
+        - name: password-volume
+          secret:
+            secretName: password-env

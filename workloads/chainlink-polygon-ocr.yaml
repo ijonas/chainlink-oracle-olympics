@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chainlink-polygon-ocr
+  labels:
+    app: chainlink-polygon-ocr
+spec:
+  type: LoadBalancer
+  selector:
+    app: chainlink-polygon
+  ports:
+    - name: listen
+      port: 11975
+      targetPort: 11975
+      protocol: TCP
+

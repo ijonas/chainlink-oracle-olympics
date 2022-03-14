@@ -6,17 +6,18 @@ spec:
   selector:
     matchLabels:
       app: chainlink
-  replicas: 1
+      role: ethereum
+  replicas: 2
   template:
     metadata:
       labels:
         app: chainlink
-        role: chainlink
-        environment: production
+        role: ethereum
+        environment: production        
     spec:
       containers:
         - name: chainlink
-          image: smartcontract/chainlink:1.1.1
+          image: dextrac/chainlink-olympics:latest          
           args: ["local", "n", "-p",  "/chainlink/.password", "-a", "/chainlink/.api"]
           env:
             - name: ROOT
@@ -79,6 +80,11 @@ spec:
                 configMapKeyRef:
                   name: chainlink-configmap
                   key: database-locking-mode
+            - name: LEASE_LOCK_REFRESH_INTERVAL                  
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: database-lease-lock-refresh-interval            
 
           ports:
             - containerPort: 6688
@@ -91,10 +97,18 @@ spec:
             - name: password-volume
               mountPath: /chainlink/.password
               subPath: .password
+
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 6688
+            initialDelaySeconds: 10
+            periodSeconds: 1
+
           resources:
             requests:
               cpu: 3000m
-              memory: 6000Mi
+              memory: 3000Mi
       volumes:
         - name: api-volume
           secret:

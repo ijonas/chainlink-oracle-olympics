@@ -37,6 +37,11 @@ spec:
                 configMapKeyRef:
                   name: chainlink-configmap
                   key: bor-chain-id
+            - name: LINK_CONTRACT_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-link-contract-address
             - name: CHAINLINK_TLS_PORT
               valueFrom:
                 configMapKeyRef:
@@ -75,69 +80,80 @@ spec:
 
 
 
-            # - name: FEATURE_OFFCHAIN_REPORTING
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: feature-offchain-reporting
-            # - name: OCR_TRACE_LOGGING
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: ocr-trace-logging
-            # - name: P2P_LISTEN_PORT
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: polygon-p2p-listen-port
-            # - name: P2P_ANNOUNCE_IP
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: polygon-p2p-announce-ip
-            # - name: P2P_ANNOUNCE_PORT
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: polygon-p2p-announce-port                  
+            - name: FEATURE_OFFCHAIN_REPORTING
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-feature-offchain-reporting
+            - name: OCR_TRACE_LOGGING
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: ocr-trace-logging
+            - name: P2P_LISTEN_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-p2p-listen-port
+            - name: P2P_ANNOUNCE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-p2p-announce-ip
+            - name: P2P_ANNOUNCE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-p2p-announce-port                  
 
 
-            # - name: OCR_KEY_BUNDLE_ID
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: ocr-key-bundle-id                  
-            # - name: P2P_PEER_ID
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: p2p-peer-id                  
-            # - name: OCR_TRANSMITTER_ADDRESS
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: ocr-transmitter-address                  
+            - name: OCR_KEY_BUNDLE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-key-bundle-id                  
+            - name: P2P_PEER_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-p2p-peer-id                  
+            - name: OCR_TRANSMITTER_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-transmitter-address                  
 
-            # - name: EXPLORER_ACCESS_KEY
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: chainlink-secrets
-            #       key: explorer-access-key
-            # - name: EXPLORER_SECRET
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: chainlink-secrets
-            #       key: explorer-secret
-            # - name: EXPLORER_URL
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: explorer-url
-            # - name: P2P_BOOTSTRAP_PEERS
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: chainlink-configmap
-            #       key: p2p-bootstrap-peers
+            - name: OCR_DATABASE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-database-timeout
+            - name: OCR_CONTRACT_TRANSMITTER_TRANSMIT_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-contract-transmitter-transmit-timout
+            - name: OCR_OBSERVATION_GRACE_PERIOD
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-observation-grace-period
+            - name: OCR_OBSERVATION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-observation-timeout
+            - name: OCR_BLOCKCHAIN_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-ocr-blockchain-timeout
+
+            - name: P2P_BOOTSTRAP_PEERS
+              valueFrom:
+                configMapKeyRef:
+                  name: chainlink-configmap
+                  key: polygon-p2p-bootstrap-peers
 
           ports:
             - containerPort: 6688
